@@ -63,65 +63,69 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }, []);
 
   const signIn = async (username: string, password: string) => {
+  try {
+    // Fetch the latest users from Supabase first
+    await getSupabaseUsers();
+    
+    // Now get users from localStorage (which should be updated with Supabase data)
+    const localUsers = getUsers();
+    const localUser = localUsers.find(u => 
+      u.username.toLowerCase() === username.toLowerCase() && 
+      u.password === password
+    );
+    
+    if (localUser) {
+      // Ensure user has a proper UUID
+      const userWithProperUUID = isValidUUID(localUser.id) ? 
+        localUser : 
+        { ...localUser, id: generateProperUUID() };
+        
+      // Сохраняем пользователя в состоянии и session storage
+      setUser(userWithProperUUID);
+      sessionStorage.setItem('currentUser', JSON.stringify(userWithProperUUID));
+      // Сохраняем пользователя в localStorage для автологина
+      localStorage.setItem('autoLoginUser', JSON.stringify(userWithProperUUID));
+      return { user: userWithProperUUID, error: null };
+    }
+
+    // Если локальная аутентификация не удалась, пробуем через Supabase
     try {
-      // Fetch the latest users from Supabase first
-      await getSupabaseUsers();
-      
-      // Now get users from localStorage (which should be updated with Supabase data)
-      const localUsers = getUsers();
-      const localUser = localUsers.find(u => 
-        u.username.toLowerCase() === username.toLowerCase() && 
-        u.password === password
-      );
-      
-      if (localUser) {
-        // Ensure user has a proper UUID
-        const userWithProperUUID = isValidUUID(localUser.id) ? 
-          localUser : 
-          { ...localUser, id: generateProperUUID() };
-          
-        // Сохраняем пользователя в состоянии и session storage
-        setUser(userWithProperUUID);
-        sessionStorage.setItem('currentUser', JSON.stringify(userWithProperUUID));
-        return { user: userWithProperUUID, error: null };
+      const { data, error } = await supabase
+        .from('users')
+        .select('*')
+        .ilike('username', username)
+        .eq('password', password)
+        .single();
+
+      if (error || !data) {
+        return { user: null, error: 'Неверное имя пользователя или пароль' };
       }
 
-      // Если локальная аутентификация не удалась, пробуем через Supabase
-      try {
-        const { data, error } = await supabase
-          .from('users')
-          .select('*')
-          .ilike('username', username)
-          .eq('password', password)
-          .single();
+      // Преобразуем данные из Supabase в наш тип User
+      const userData: User = {
+        id: data.id,
+        username: data.username,
+        password: data.password,
+        role: data.role as 'admin' | 'courier',
+        name: data.name
+      };
 
-        if (error || !data) {
-          return { user: null, error: 'Неверное имя пользователя или пароль' };
-        }
+      // Сохраняем пользователя в состоянии и session storage
+      setUser(userData);
+      sessionStorage.setItem('currentUser', JSON.stringify(userData));
+      // Сохраняем пользователя в localStorage для автологина
+      localStorage.setItem('autoLoginUser', JSON.stringify(userData));
 
-        // Преобразуем данные из Supabase в наш тип User
-        const userData: User = {
-          id: data.id,
-          username: data.username,
-          password: data.password,
-          role: data.role as 'admin' | 'courier',
-          name: data.name
-        };
-
-        // Сохраняем пользователя в состоянии и session storage
-        setUser(userData);
-        sessionStorage.setItem('currentUser', JSON.stringify(userData));
-
-        return { user: userData, error: null };
-      } catch (supabaseError) {
-        console.error('Ошибка при аутентификации через Supabase:', supabaseError);
-        return { user: null, error: 'Произошла ошибка при входе в систему' };
-      }
-    } catch (error) {
-      console.error('Непредвиденная ошибка при входе:', error);
+      return { user: userData, error: null };
+    } catch (supabaseError) {
+      console.error('Ошибка при аутентификации через Supabase:', supabaseError);
       return { user: null, error: 'Произошла ошибка при входе в систему' };
     }
-  };
+  } catch (error) {
+    console.error('Непредвиденная ошибка при входе:', error);
+    return { user: null, error: 'Произошла ошибка при входе в систему' };
+  }
+};
 
   const signOut = async () => {
     // Очищаем пользователя из состояния и session storage
