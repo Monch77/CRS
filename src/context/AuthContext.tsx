@@ -33,34 +33,54 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    // Проверяем наличие пользователя в session storage при начальной загрузке
-    const storedUser = sessionStorage.getItem('currentUser');
-    if (storedUser) {
+useEffect(() => {
+  // Проверяем наличие пользователя в session storage при начальной загрузке
+  const storedUser = sessionStorage.getItem('currentUser');
+  if (storedUser) {
+    try {
+      const parsedUser = JSON.parse(storedUser);
+      
+      // Ensure user has a proper UUID
+      if (!isValidUUID(parsedUser.id)) {
+        parsedUser.id = generateProperUUID();
+        sessionStorage.setItem('currentUser', JSON.stringify(parsedUser));
+      }
+      
+      setUser(parsedUser);
+    } catch (e) {
+      console.error('Error parsing stored user:', e);
+      sessionStorage.removeItem('currentUser');
+    }
+  } else {
+    // Проверяем наличие пользователя в localStorage для автологина
+    const autoLoginUser = localStorage.getItem('autoLoginUser');
+    if (autoLoginUser) {
       try {
-        const parsedUser = JSON.parse(storedUser);
-        
+        const parsedAutoLoginUser = JSON.parse(autoLoginUser);
+
         // Ensure user has a proper UUID
-        if (!isValidUUID(parsedUser.id)) {
-          parsedUser.id = generateProperUUID();
-          sessionStorage.setItem('currentUser', JSON.stringify(parsedUser));
+        if (!isValidUUID(parsedAutoLoginUser.id)) {
+          parsedAutoLoginUser.id = generateProperUUID();
+          localStorage.setItem('autoLoginUser', JSON.stringify(parsedAutoLoginUser));
         }
-        
-        setUser(parsedUser);
+
+        setUser(parsedAutoLoginUser);
+        sessionStorage.setItem('currentUser', JSON.stringify(parsedAutoLoginUser));
       } catch (e) {
-        console.error('Error parsing stored user:', e);
-        sessionStorage.removeItem('currentUser');
+        console.error('Error parsing auto login user:', e);
+        localStorage.removeItem('autoLoginUser');
       }
     }
-    
-    // Fetch users from Supabase to ensure we have the latest data
-    getSupabaseUsers().then(() => {
-      setLoading(false);
-    }).catch(error => {
-      console.error('Error fetching users during auth initialization:', error);
-      setLoading(false);
-    });
-  }, []);
+  }
+  
+  // Fetch users from Supabase to ensure we have the latest data
+  getSupabaseUsers().then(() => {
+    setLoading(false);
+  }).catch(error => {
+    console.error('Error fetching users during auth initialization:', error);
+    setLoading(false);
+  });
+}, []);
 
   const signIn = async (username: string, password: string) => {
   try {
