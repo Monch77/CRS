@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import { supabase, shouldUseSupabase } from '../lib/supabase'; // Исправлен импорт
+import { supabase, shouldUseSupabase } from '../lib/supabase';
 import { User } from '../types';
 import { getUsers, syncDataWithServer } from '../utils/localStorage';
 import { getUsers as getSupabaseUsers } from '../services/userService';
@@ -43,7 +43,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           sessionStorage.setItem('currentUser', JSON.stringify(parsedUser));
         }
         setUser(parsedUser);
-        // Автовход
         if (parsedUser.role === 'admin') {
           navigate('/admin');
         } else if (parsedUser.role === 'courier') {
