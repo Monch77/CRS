@@ -1,55 +1,60 @@
-# Система оценки курьеров
+# crs_flutter
 
-Система оценки курьеров с использованием React, TypeScript, Tailwind CSS и Supabase.
+A Flutter-based Courier Rating System application.
 
-## Функциональность
+## Overview
 
-- Аутентификация пользователей (администраторы и курьеры)
-- Управление заказами (создание, редактирование, удаление)
-- Управление курьерами (добавление, редактирование, удаление)
-- Система оценки доставки клиентами
-- Отслеживание статистики и производительности курьеров
+This project is a cross-platform Flutter application for Android and iOS, replacing the previous React-based version. It includes push notifications, local notifications, and Supabase integration for real-time order updates.
 
-## Технологии
+## Getting Started
 
+This project is a starting point for a Flutter application.
+
+A few resources to get you started if this is your first Flutter project:
+- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
+- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+
+For help getting started with Flutter development, view the [online documentation](https://docs.flutter.dev/), which offers tutorials, samples, guidance on mobile development, and a full API reference.
+
+### Installation
+1. Clone the repository: `git clone https://github.com/Monch77/CRS.git`
+2. Navigate to the project folder: `cd crs_flutter`
+3. Install dependencies: `flutter pub get`
+4. Run the app: `flutter run`
+
+## Previous Version (React)
+
+The original project was a Courier Rating System built with React, TypeScript, Tailwind CSS, and Supabase.
+
+### Functionality (React Version)
+- User authentication (admins and couriers)
+- Order management (create, edit, delete)
+- Courier management (add, edit, delete)
+- Delivery rating system for clients
+- Courier performance tracking
+
+### Technologies (React Version)
 - React 18
 - TypeScript
 - Tailwind CSS
-- Supabase (PostgreSQL, аутентификация)
+- Supabase (PostgreSQL, authentication)
 - React Router
-- Lucide React (иконки)
-- Date-fns (работа с датами)
+- Lucide React (icons)
+- Date-fns (date handling)
 
-## Установка и запуск
+### Installation (React Version)
+1. Clone the repository
+2. Install dependencies: `npm install`
+3. Create a `.env` file based on `.env.example` and add your Supabase keys
+4. Run Supabase migrations from `supabase/migrations`
+5. Start the project: `npm run dev`
 
-1. Клонируйте репозиторий
-2. Установите зависимости: `npm install`
-3. Создайте файл `.env` на основе `.env.example` и добавьте ваши ключи Supabase
-4. Запустите миграции Supabase из папки `supabase/migrations`
-5. Запустите проект: `npm run dev`
-
-## Структура проекта
-
-- `/src/components` - Компоненты React
-- `/src/context` - Контексты React (AuthContext)
-- `/src/lib` - Библиотеки и утилиты (Supabase клиент)
-- `/src/pages` - Страницы приложения
-- `/src/services` - Сервисы для работы с данными
-- `/src/types` - TypeScript типы
-- `/src/utils` - Вспомогательные функции
-- `/supabase/migrations` - SQL миграции для Supabase
-
-## Роли пользователей
-
-### Администратор
-- Создание и управление заказами
-- Управление курьерами
-- Просмотр статистики и оценок
-
-### Курьер
-- Просмотр назначенных заказов
-- Обновление статуса заказов
-- Просмотр своих оценок
-
-### Клиент (без аутентификации)
-- Оценка доставки по коду
+### Project Structure (React Version)
+- `/src/components` - React components
+- `/src/context` - React contexts (AuthContext)
+- `/src/lib` - Libraries and utilities (Supabase client)
+- `/src/pages` - Application pages
+- `/src/services` - Data services
+- `/src/types` - TypeScript types
+- `/src/utils` - Helper functions
+- `/supabase/migrations` - SQL migrations for Supabase
