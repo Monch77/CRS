@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "690719775154",
+    "project_id": "crs-flutter-f03cd",
+    "storage_bucket": "crs-flutter-f03cd.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:690719775154:android:37996f2ba9d36d2c00ecab",
+        "android_client_info": {
+          "package_name": "com.example.crs_flutter"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA58uDqlQn6LD5TODKu8Tuk7KZrfCv6R18"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
