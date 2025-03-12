@@ -1,11 +1,12 @@
 name: crs_flutter
-description: "A new Flutter project for courier order notifications."
-publish_to: 'none' # Private package
+description: A Flutter-based Courier Rating System application.
+
+publish_to: 'none' # This is a private project.
 
 version: 1.0.0+1
 
 environment:
-  sdk: ^3.7.0
+  sdk: ">=3.7.0 <4.0.0"
 
 dependencies:
   flutter:
@@ -15,25 +16,24 @@ dependencies:
   firebase_core: ^3.12.1
   firebase_messaging: ^15.2.4
 
-  # Локальные уведомления
+  # Local notifications
   flutter_local_notifications: ^18.0.1
 
   # Supabase
   supabase_flutter: ^2.5.3
 
-  # Хранение настроек
+  # Shared preferences
   shared_preferences: ^2.2.2
 
-  # WebView для iframe
+  # WebView for iframe
   webview_flutter: ^4.7.0
 
-  # Иконки Cupertino
+  # Cupertino icons
   cupertino_icons: ^1.0.8
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-
   flutter_lints: ^5.0.0
 
 dependency_overrides:
@@ -45,11 +45,3 @@ dependency_overrides:
 
 flutter:
   uses-material-design: true
-
-  # Если в будущем добавятся изображения или шрифты:
-  # assets:
-  #   - assets/images/
-  # fonts:
-  #   - family: CustomFont
-  #     fonts:
-  #       - asset: assets/fonts/CustomFont-Regular.ttf

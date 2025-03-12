@@ -12,7 +12,7 @@ android {
 
     defaultConfig {
         applicationId = "com.example.crs_flutter"
-        minSdk = 26
+        minSdk = 26  // ✅ Убедились, что minSdk 26
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName
@@ -30,7 +30,7 @@ android {
 
     buildTypes {
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = false  // Отключаем R8
             isShrinkResources = false
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
             signingConfig = signingConfigs.getByName("debug")
@@ -47,4 +47,5 @@ dependencies {
     implementation("com.android.tools:desugar_jdk_libs:2.0.3")
 }
 
-apply(plugin = "com.google.gms.google-services") // Firebase
+// Firebase
+apply(plugin = "com.google.gms.google-services")

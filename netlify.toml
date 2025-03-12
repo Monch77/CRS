@@ -1,0 +1,14 @@
+# This file configures Netlify to handle client-side routing in single-page applications
+
+[build]
+  # Directory to publish (relative to root of your repo)
+  publish = "dist"
+  # Default build command
+  command = "npm run build"
+
+# The following redirect is necessary for single-page applications that use client-side routing
+# It ensures that all routes are handled by the index.html file
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
